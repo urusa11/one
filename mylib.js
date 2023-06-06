@@ -2,14 +2,16 @@ window.onOpenCvReady = function() {
   document.getElementById('loading-opencv-msg').remove();
 }
 
+window.onload = function() {
+  $("input:checkbox").prop("disabled", true);
+}
+
 $(document).ready(function() {
   $('#input_3_2 input[type=checkbox]').click(function() {
-    $("#input_3_2 input[type=checkbox]").attr('disabled', true);
-    if ($("#input_3_2 input[type=checkbox]:checked").length >= 2) {
-      $("#input_3_2 input[type=checkbox]:checked").attr('disabled', false);
-    } else {
-      $('#input_3_2 input[type=checkbox]').attr('disabled', false);
-    }
+    if ($("#input_3_2 input[type=checkbox]:checked").length >= 2)
+      $("input:checkbox").prop("disabled", true);
+    else
+      $("input:checkbox").prop("disabled", false);
   });
 })
 
@@ -140,29 +142,37 @@ function getphotos() {
 }
 
 function showphotos() {
-  var num = document.getElementById('quantity');
-  var tmp = getphotos();
-  for (var p = 1; p <= num.value; p++) {
-    var c = document.getElementById('canvas' + p),
-      ctx = c.getContext('2d'),
-      imgData = ctx.createImageData(crow, ccol);
-    c.width = ccol;
-    c.height = crow;
-    for (var y = 0; y < crow; y++) {
-      for (var x = 0; x < ccol; x++) {
-        imgData.data[y * ccol * 4 + x * 4 + 0] = tmp[p - 1][y][x].r;
-        imgData.data[y * ccol * 4 + x * 4 + 1] = tmp[p - 1][y][x].g;
-        imgData.data[y * ccol * 4 + x * 4 + 2] = tmp[p - 1][y][x].b;
-        imgData.data[y * ccol * 4 + x * 4 + 3] = tmp[p - 1][y][x].s;
+  $("input:checkbox").prop("disabled", false);
+  if (ccol != scol * 2 || crow != srow * 2 || srow == 0 || scol == 0 || crow == 0 || ccol == 0)
+    window.alert("錯誤:沒有圖片或圖片大小錯誤");
+  else {
+    var num = document.getElementById('quantity');
+    if (num.value == 0)
+      window.alert("請輸入生成張數");
+    else {
+      var tmp = getphotos();
+      for (var p = 1; p <= num.value; p++) {
+        var c = document.getElementById('canvas' + p),
+          ctx = c.getContext('2d'),
+          imgData = ctx.createImageData(crow, ccol);
+        c.width = ccol;
+        c.height = crow;
+        for (var y = 0; y < crow; y++) {
+          for (var x = 0; x < ccol; x++) {
+            imgData.data[y * ccol * 4 + x * 4 + 0] = tmp[p - 1][y][x].r;
+            imgData.data[y * ccol * 4 + x * 4 + 1] = tmp[p - 1][y][x].g;
+            imgData.data[y * ccol * 4 + x * 4 + 2] = tmp[p - 1][y][x].b;
+            imgData.data[y * ccol * 4 + x * 4 + 3] = tmp[p - 1][y][x].s;
+          }
+        }
+        ctx.putImageData(imgData, 0, 0);
       }
     }
-    ctx.putImageData(imgData, 0, 0);
   }
 }
 
 function showphoto() {
-  var a = -1,
-    b = -1;
+  var a = -1,b = -1;
   var markedCheckbox = document.querySelectorAll('input[type="checkbox"]:checked');
   for (var checkbox of markedCheckbox) {
     if (a == -1) a = checkbox.value;
@@ -201,8 +211,9 @@ function showphoto() {
     for (var i = 3; i < imgData.data.length; i += 4)
       imgData.data[i] = 255;
     ctx.putImageData(imgData, 0, 0);
+    document.getElementById("err").innerHTML = ('圖'+a+" XOR 圖"+b);
   } else {
-    document.getElementById("err").innerHTML = ('請選擇兩張圖片');
+    window.alert('請選擇兩張圖片');
     for (var i = 0; i < imgData.data.length; i++)
       imgData.data[i] = 0;
     ctx.putImageData(imgData, 0, 0);
@@ -210,13 +221,16 @@ function showphoto() {
 }
 
 function rechoose() {
+document.getElementById("err").innerHTML = ('');
+  $('input:checkbox').removeAttr('checked');
+  $("input:checkbox").prop("disabled", false);
   var c = document.getElementById('canvas'),
     ctx = c.getContext('2d'),
     imgData = ctx.getImageData(0, 0, scol, srow);
-   for(var i = 0; i < imgData.data.length; i++)
-      imgData.data[i] = 0;
-    ctx.putImageData(imgData, 0, 0);
-	document.getElementById("check").innerHTML = ('');
+  for (var i = 0; i < imgData.data.length; i++)
+    imgData.data[i] = 0;
+  ctx.putImageData(imgData, 0, 0);
+  document.getElementById("check").innerHTML = ('');
 }
 
 function check() {
@@ -234,12 +248,5 @@ function check() {
 }
 
 function reset() {
-	var links = document.getElementsByTagName("link");
-    for (var cl in links)
-    {
-        var link = links[cl];
-        if (link.rel === "stylesheet")
-            link.href += "";
-    }
   location.reload();
 }
