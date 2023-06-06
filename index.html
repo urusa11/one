@@ -19,7 +19,7 @@
               <p>&nbsp;</p>
             </div>
             <p>  
-                <input type="file" id="file-upload1" /><br>
+                <input type="file" id="file-upload1" /><br><label id="image1size" />
     </p>
             <p>              <img class="srcimg" id="src-image1" /></p>
             <p>&nbsp;</p>
@@ -32,14 +32,19 @@
               <p><strong style="font-size: medium">(須為機密圖像 2倍長 2倍寬)</strong>            </p>
             </div>
             <p>
-              <input type="file" id="file-upload2" />
+              <input type="file" id="file-upload2" /><br><label id="image2size" />
     </p>
     						<img class="srcimg" id="src-image2" />
             <p>&nbsp;</p>
     </div>
     <div class="footer1">
     <br>
-        <label for="quantity">選擇分享圖像張數(2~16)
+    <label for="AA">輸入隨機數A:</label>
+    <input type="text" id="AA" placeholder="必須是不為1的奇數">
+     <label for="AB">輸入隨機數B:</label>
+    <input type="text" id="AB" placeholder="介於1~255">
+    <button id="button" onclick="getAB()"><strong style="font-size:large">送出</strong></button>
+      <label for="quantity">選擇分享圖像張數(2~16)
           <input type="number" id="quantity" name="quantity" min="2" max="16">
           </label>
         <button id="button1" onclick="showphotos()"><strong style="font-size: large">開始生成</strong></button>
