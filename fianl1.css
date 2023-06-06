@@ -72,6 +72,20 @@ body {
 	font-size: medium;
 	background-color: rgba(205,255,201,1.00);
 }
+#middle5{
+	width: 49.7%;
+	height: 100%;
+	float: left;
+	font-size: medium;
+	background-color: rgba(205,255,201,1.00);
+}
+#middle6{
+	width: 49.7%;
+	height: 100%;
+	float: left;
+	font-size: medium;
+	background-color: rgba(205,255,201,1.00);
+}
 #image1size
 {
 	font-size: xx-large;
@@ -119,21 +133,25 @@ body {
 .footer1{
 	position: absolute;
 	top: 113%;
-	left: 26%;
-	height:15%;
-	width: 48%;
-	margin-top: 1%;
+	height: 18%;
+	width: 98.8%;
 	border-radius: 5px;
 	background-color: rgba(93,239,137,1.00);
+	border: 2px solid white;
 }
 #canvas{
 	width: 260px;
 	height: 260px;
 	border: solid 1px #fff;
 }
+#button{
+	width: 8%;
+	height: 30%;
+	box-shadow: 8px 10px 10px 1px rgba(0,0,0,0.5);
+}
 #button1{
-	width: 15%;
-	height: 40%;
+	width: 8%;
+	height: 30%;
 	box-shadow: 8px 10px 10px 1px rgba(0,0,0,0.5);
 }
 #button2{
@@ -176,3 +194,13 @@ body {
 	height: 20%;
 	font-size: large;
  }
+#AA{
+	width: 11%;
+	height: 20%;
+	font-size: large;
+}
+#AB{
+	width: 7%;
+	height: 20%;
+	font-size: large;
+}
