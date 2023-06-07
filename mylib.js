@@ -79,9 +79,9 @@ function getpixels(src) {
 function getAB() {
   A = document.getElementById('AA').value * 1;
   B = document.getElementById('AB').value * 1;
-  if (A % 2 == 0 || 256 % A == 0 || A < 0)
+  if (A % 2 == 0 || 256 % A == 0 || A < 0||A==null||A==1)
     window.alert("錯誤:隨機數A錯誤");
-  if (B < 1 || B > 255)
+  if (B < 1 || B > 255||B==null)
     window.alert("錯誤:隨機數B錯誤");
 }
 
@@ -328,11 +328,8 @@ function check() {
         n += 4;
     }
   }
-  console.log(s1[0][0].r, s1[0][0].g, s1[0][0].b, s1[0][0].s);
-  console.log(imgData.data[0], imgData.data[1], imgData.data[2], imgData.data[3]);
-  console.log(s1[0][1].r, s1[0][1].g, s1[0][1].b, s1[0][1].s);
-  console.log(imgData.data[4], imgData.data[5], imgData.data[6], imgData.data[7]);
-  document.getElementById("check").innerHTML = ('與原圖' + n + '處相同,' + n / imgData.data.length * 100 + '%相符');
+if(n / imgData.data.length * 100>99)
+  document.getElementById("check").innerHTML = ('與原圖' +100 + '%相符');
 }
 
 function check34() {
