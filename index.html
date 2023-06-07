@@ -19,7 +19,7 @@
               <p>&nbsp;</p>
             </div>
             <p>  
-                <input type="file" id="file-upload1" /><br><label id="image1size" />
+                <input type="file" id="file-upload1" /><br>
     </p>
             <p>              <img class="srcimg" id="src-image1" /></p>
             <p>&nbsp;</p>
@@ -32,7 +32,7 @@
               <p><strong style="font-size: medium">(須為機密圖像 2倍長 2倍寬)</strong>            </p>
             </div>
             <p>
-              <input type="file" id="file-upload2" /><br><label id="image2size" />
+              <input type="file" id="file-upload2" /><br>
     </p>
     						<img class="srcimg" id="src-image2" />
             <p>&nbsp;</p>
@@ -43,7 +43,6 @@
     <input type="text" id="AA" placeholder="必須是不為1的奇數">
      <label for="AB">輸入隨機數B:</label>
     <input type="text" id="AB" placeholder="介於1~255">
-    <button id="button" onclick="getAB()"><strong style="font-size:large">送出</strong></button>
       <label for="quantity">選擇分享圖像張數(2~16)
           <input type="number" id="quantity" name="quantity" min="2" max="16">
           </label>
@@ -127,19 +126,42 @@
     <div id="middle4" class="imgFrame">
     <p>&nbsp;</p>
     <p>&nbsp;</p>
-    <p>&nbsp;</p>
     <button id="button3" onclick="check()"><strong style="font-size: xx-large">與原圖進行比對</strong></button>
-      <p>
         <label id="check"></label>
-   	     </p>
-         	<p><br>
+			<br>
          	  <br>
-         	  <br>
-       	  </p>
-<button id="button5" onclick="reset()"><strong>完全清除</strong></button>
+              <br>
+          <button id="button7" onclick="downloadCanvas()"><strong style="font-size: xx-large">下載所選分享圖像</strong></button>
+          <br>
+          <br>
+          <br>
+<button id="button5" onclick="reset()"><strong style="font-size: xx-large">完全清除</strong></button>
            
            
     </div>
+    <div id="middle5" class="imgFrame">
+    
+		<table>
+	<tr>
+	<div><font size="6"><strong>選擇兩張保留之分享圖像</strong></font></div>
+    <br>
+	  <input type="file" id="file-upload3" /><br>
+      <img id="src-image3" />
+	  </tr>
+      <br>
+	<tr>
+	  <input type="file" id="file-upload4" /><br>
+      <img id="src-image4" />
+	</tr>
+	</table>
+    </div>
+    <div id="middle6" class="imgFrame">
+    <div><font size="6"><strong>分享圖像解密</strong></font></div>
+    <br>
+	<button id="button6" onclick="showphoto34()"><strong style="font-size: xx-large">解密</strong></button>
+	<br>
+	<canvas id="canvas34" />
+	</div>
 </div>
 </div>
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
