@@ -1,206 +1,171 @@
-@charset "utf-8";
-#header {
-	width: 80%;
-	height: 10%;
-	background-color: rgba(243,187,145,1.00);
-	border-radius: 5px;
-	font-size: 3.5vW;
-	display: marker;
-	flex-direction: column;
-	flex-wrap: nowrap;
-	align-content: center;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
-	margin-bottom: 1%;
-	padding-top: 0px;
-	padding-bottom: 2px;
-	margin-left: 10%;
-}
-body {
-	background-color: rgba(230,245,143,1.00);
-}
-#content {
-	width: 100%;
-	display: block;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	align-content: center;
-	justify-content: center;
-	align-items: center;
-	gap: 3%;
-	font-size: xx-large;
-	text-align: center;
-	height: 565px;
-}
-.imgFrame {
-	display: flex;
-	flex-direction: column;
-	flex-wrap: nowrap;
-	align-content: center;
-	justify-content: flex-start;
-	align-items: center;
-	border: 2px solid white;
-	border-radius: 5px;
-	float: left;
-}
-#middle1{
-	width: 49.7%;
-	height: 133%;
-	float: left;
-	font-size: medium;
-	background-color: rgba(138,239,171,1.00);
-}
-#middle2{
-	width: 49.7%;
-	height: 133%;
-	float: left;
-	font-size: small;
-	background-color: rgba(138,239,171,1.00);
-}
-#middle3{
-	width: 49.7%;
-	height: 100%;
-	float: left;
-	font-size: medium;
-	background-color: rgba(205,255,201,1.00);
-}
-#middle4{
-	width: 49.7%;
-	height: 100%;
-	float: left;
-	font-size: medium;
-	background-color: rgba(205,255,201,1.00);
-}
-#middle5{
-	width: 49.7%;
-	height: 100%;
-	float: left;
-	font-size: medium;
-	background-color: rgba(205,255,201,1.00);
-}
-#middle6{
-	width: 49.7%;
-	height: 100%;
-	float: left;
-	font-size: medium;
-	background-color: rgba(205,255,201,1.00);
-}
-#image1size
-{
-	font-size: xx-large;
-}
-#image2size
-{
-	font-size: xx-large;	
-}
-#src-image1{
-	width: 260px;
-	height: 260px;
-}
-#src-image2{
-	width: 520px;
-	height: 520px;
-}
-.checkbox {
-  position: absolute;
-  left: -999em;
-}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>多張有意義分享圖像之彩色視覺密碼技術</title>
 
-.check {
-	border: solid 1px #fff;
-	z-index: -1;
-	width: 350px;
-	height: 350px;
-	margin-left: 10px;
-	margin-top: 10px;
-}
-.can{
-	width: 350px;
-	height: 350px;
-}
-.checkbox:checked ~ .check {
-	border-color: red;
-	border-width: 5px;
-}
-#share{
-	width: 99.6%;
-	height: 272%;
-	float: left;
-	margin-top: 9%;
-	background-color: rgba(141,255,235,1.00);
-}
-.footer1{
-	position: absolute;
-	top: 113%;
-	height: 18%;
-	width: 98.8%;
-	border-radius: 5px;
-	background-color: rgba(93,239,137,1.00);
-	border: 2px solid white;
-}
-#canvas{
-	width: 260px;
-	height: 260px;
-	border: solid 1px #fff;
-}
-#button{
-	width: 8%;
-	height: 30%;
-	box-shadow: 8px 10px 10px 1px rgba(0,0,0,0.5);
-}
-#button1{
-	width: 8%;
-	height: 30%;
-	box-shadow: 8px 10px 10px 1px rgba(0,0,0,0.5);
-}
-#button2{
-	width: 50%;
-	height: 10%;	
-	box-shadow: 8px 10px 10px 1px rgba(0,0,0,0.5);
-}
-#button3{
-	width: 50%;
-	height: 10%;
-	box-shadow: 8px 10px 10px 1px rgba(0,0,0,0.5);
-}
-#button4{
-	width: 50%;
-	height: 10%;
-	font-size: x-large;
-	box-shadow: 8px 10px 10px 1px rgba(0,0,0,0.5);
-}
-#button5{
-	width: 30%;
-	height: 10%;
-	font-size: x-large;
-	box-shadow: 8px 10px 10px 1px rgba(0,0,0,0.5);
-}
-#check{
-	font-size: x-large;
-}
-#file-upload1
-{
-	font-size: large;
-	margin-left: 18%;
-}
-#file-upload2
-{
-	font-size: large;
-	margin-left: 18%;
-}
- #quantity{
-	width: 7%;
-	height: 20%;
-	font-size: large;
- }
-#AA{
-	width: 11%;
-	height: 20%;
-	font-size: large;
-}
-#AB{
-	width: 7%;
-	height: 20%;
-	font-size: large;
-}
+<link href="fianl1.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+<div style=center>
+<div id="header"><strong style="font-weight: normal; font-size="6";">多張有意義分享圖像之彩色視覺密碼技術</strong></div>
+
+<div id="content">
+  <div id="middle1" class="imgFrame">
+            <div>
+              <p><font size="7"><strong>機密圖像</strong></font>            </p>
+              <p>&nbsp;</p>
+            </div>
+            <p>  
+                <input type="file" id="file-upload1" /><br>
+    </p>
+            <p>              <img class="srcimg" id="src-image1" /></p>
+            <p>&nbsp;</p>
+            
+  </div>
+  <div id="middle2" class="imgFrame">
+            <div>
+              <p><font size="7"><strong>遮蔽圖像</strong></font><br>              
+              </p>
+              <p><strong style="font-size: medium">(須為機密圖像 2倍長 2倍寬)</strong>            </p>
+            </div>
+            <p>
+              <input type="file" id="file-upload2" /><br>
+    </p>
+    						<img class="srcimg" id="src-image2" />
+            <p>&nbsp;</p>
+    </div>
+    <div class="footer1">
+    <br>
+    <label for="AA">輸入隨機數A:</label>
+    <input type="text" id="AA" placeholder="必須是不為1的奇數">
+     <label for="AB">輸入隨機數B:</label>
+    <input type="text" id="AB" placeholder="介於1~255">
+      <label for="quantity">選擇分享圖像張數(2~16)
+          <input type="number" id="quantity" name="quantity" min="2" max="16">
+          </label>
+        <button id="button1" onclick="showphotos()"><strong style="font-size: large">開始生成</strong></button>
+    </div>
+    <div id="share" class="imgFrame">
+    <div><font size="7"><strong>分享圖像</strong></font></div>
+    <table align="left" id="input_3_2">
+      <tr>
+      <td><label width=50 for="box1"><input id="box1" type="checkbox" class="checkbox" value='1'>
+          <div class="check"><canvas class="can" id="canvas1" /></div>
+        </label></td>
+      <td><label for="box2"><input id="box2" type="checkbox" class="checkbox" value='2'>
+          <div class="check"><canvas class="can" id="canvas2" /></div>
+        </label></td>
+      <td><label for="box3"><input id="box3" type="checkbox" class="checkbox" value='3'>
+          <div class="check"><canvas class="can" id="canvas3" /></div>
+        </label></td>
+      <td><label for="box4"><input id="box4" type="checkbox" class="checkbox" value='4'>
+          <div class="check"><canvas class="can" id="canvas4" /></div>
+        </label></td>
+      </tr>
+    <tr>
+    <td><label for="box5"><input id="box5" type="checkbox" class="checkbox" value='5'>
+          <div class="check"><canvas class="can" id="canvas5" /></div>
+        </label></td>
+      <td><label for="box6"><input id="box6" type="checkbox" class="checkbox" value='6'>
+          <div class="check"><canvas class="can" id="canvas6" /></div>
+        </label></td>
+      <td><label for="box7"><input id="box7" type="checkbox" class="checkbox" value='7'>
+          <div class="check"><canvas class="can" id="canvas7" /></div>
+        </label></td>
+      <td><label for="box8"><input id="box8" type="checkbox" class="checkbox" value='8'>
+          <div class="check"><canvas class="can" id="canvas8" /></div>
+        </label></td>
+             </tr>
+    <tr>
+      <td><label for="box9"><input id="box9" type="checkbox" class="checkbox" value='9'>
+          <div class="check"><canvas class="can" id="canvas9" /></div>
+        </label></td>
+      <td><label for="box10"><input id="box10" type="checkbox" class="checkbox" value='10'>
+          <div class="check"><canvas class="can" id="canvas10" /></div>
+        </label></td>
+      <td><label for="box11"><input id="box11" type="checkbox" class="checkbox" value='11'>
+          <div class="check"><canvas class="can" id="canvas11" /></div>
+        </label></td>
+      <td><label for="box12"><input id="box12" type="checkbox" class="checkbox" value='12'>
+          <div class="check"><canvas class="can" id="canvas12" /></div>
+        </label></td>
+             </tr>
+    <tr>
+      <td><label for="box13"><input id="box13" type="checkbox" class="checkbox" value='13'>
+          <div class="check"><canvas class="can" id="canvas13" /></div>
+        </label></td>
+      <td><label for="box14"><input id="box14" type="checkbox" class="checkbox" value='14'>
+          <div class="check"><canvas class="can" id="canvas14" /></div>
+        </label></td>
+      <td><label for="box15"><input id="box15" type="checkbox" class="checkbox" value='15'>
+          <div class="check"><canvas class="can" id="canvas15" /></div>
+        </label></td>
+      <td><label for="box16"><input id="box16" type="checkbox" class="checkbox" value='16'>
+          <div class="check"><canvas class="can" id="canvas16" /></div>
+        </label></td>
+    </tr>
+  </table>
+    </div>
+    <div id="middle3" class="imgFrame">
+    	<div><font size="6"><strong>可自行點選兩張分享圖像</strong></font></div>
+        <br>
+        <button id="button4" onclick="rechoose()"><strong>重新選擇張分享圖像</strong></button>
+         <br>
+    		<button id="button2" onclick="showphoto()"><strong style="font-size: xx-large">開始解密</strong></button>
+    	    <p>&nbsp;</p>
+    	    <p>
+    	      <label id="err"></label>
+    	      <canvas id="canvas" />              
+      </p>
+      
+    	    <p>&nbsp;</p>
+    </div>
+    <div id="middle4" class="imgFrame">
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <button id="button3" onclick="check()"><strong style="font-size: xx-large">與原圖進行比對</strong></button>
+        <label id="check"></label>
+			<br>
+         	  <br>
+              <br>
+          <button id="button7" onclick="downloadCanvas()"><strong style="font-size: xx-large">下載所選分享圖像</strong></button>
+          <br>
+          <br>
+          <br>
+<button id="button5" onclick="reset()"><strong style="font-size: xx-large">完全清除</strong></button>
+           
+           
+    </div>
+    <div id="middle5" class="imgFrame">
+    
+		<table>
+	<tr>
+	<div><font size="6"><strong>選擇兩張保留之分享圖像</strong></font></div>
+    <br>
+	  <input type="file" id="file-upload3" /><br>
+      <img id="src-image3" />
+	  </tr>
+      <br>
+	<tr>
+	  <input type="file" id="file-upload4" /><br>
+      <img id="src-image4" />
+	</tr>
+	</table>
+    </div>
+    <div id="middle6" class="imgFrame">
+    <div><font size="6"><strong>分享圖像解密</strong></font></div>
+    <br>
+	<button id="button6" onclick="showphoto34()"><strong style="font-size: xx-large">解密</strong></button>
+	<br>
+	<canvas id="canvas34" />
+	</div>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="opencv.js" async onload="onOpenCvReady();" type="text/javascript"></script>
+<script src="mylib.js" type="text/javascript"></script>
+</body>
+</html>
