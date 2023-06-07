@@ -95,12 +95,12 @@ body {
 	font-size: xx-large;	
 }
 #src-image1{
-	width: 260px;
-	height: 260px;
+	width: 128px;
+	height: 128px;
 }
 #src-image2{
-	width: 520px;
-	height: 520px;
+	width: 256px;
+	height: 256px;
 }
 .checkbox {
   position: absolute;
@@ -215,17 +215,17 @@ body {
 	font-size: large;
 }
 #src-image3{
-	width: 512px;
-	height: 512px;
+	width: 256px;
+	height: 256px;
 	border: solid 1px #fff;
 }
 #src-image4{
-	width: 512px;
-	height: 512px;
+	width: 256px;
+	height: 256px;
 	border: solid 1px #fff;
 }
 #canvas34{
-	width: 256px;
-	height: 256px;
+	width: 128px;
+	height: 128px;
 	border: solid 1px #fff;
 }
