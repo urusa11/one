@@ -83,7 +83,6 @@ function getAB() {
     window.alert("錯誤:隨機數A錯誤");
   if (B < 1 || B > 255)
     window.alert("錯誤:隨機數B錯誤");
-  //console.log(A, B);
 }
 
 function getA_inv(n) {
@@ -215,11 +214,66 @@ srcImgE4.onload = function() {
 }
 
 function showphoto() {
+  var a = -1,
+    b = -1;
+  var markedCheckbox = document.querySelectorAll('input[type="checkbox"]:checked');
+  for (var checkbox of markedCheckbox) {
+    if (a == -1) a = checkbox.value;
+    else b = checkbox.value;
+  }
+  var c = document.getElementById('canvas'),
+    ctx = c.getContext('2d'),
+    imgData = ctx.createImageData(srow, scol);
+  if (a != -1 && b != -1) {
+    document.getElementById("err").innerHTML = ('');
+    var c_a = document.getElementById('canvas' + a),
+      ctx_a = c_a.getContext('2d'),
+      imgData_a = ctx_a.getImageData(0, 0, ccol, crow),
+      c_b = document.getElementById('canvas' + b),
+      ctx_b = c_b.getContext('2d'),
+      imgData_b = ctx_b.getImageData(0, 0, ccol, crow),
+      tmp = [];
+    c.width = scol;
+    c.height = srow;
+    for (var i = 0; i < imgData_a.data.length; i++) {
+      if (i % 4 == 3) {
+        tmp[i] = 255;
+        continue;
+      }
+      tmp[i] = imgData_a.data[i] ^ imgData_b.data[i];
+    }
+    var AA = imgData_a.data[3],
+      BB = imgData_a.data[7];
+    var AA_inv = getA_inv(AA);
+    //console.log(A, B, AA, BB, AA_inv);
+    for (var y = 0; y < srow; y++) {
+      for (var x = 0; x < scol; x++) {
+        for (var t = 0; t < 4; t++) {
+          var z = Math.max(tmp[2 * y * ccol * 4 + 2 * x * 4 + t], tmp[2 * y * ccol * 4 + (2 * x + 1) * 4 + t], tmp[(2 * y + 1) * ccol * 4 + 2 * x * 4 + t], tmp[(2 * y + 1) * ccol * 4 + (2 * x + 1) * 4 + t]) - BB;
+          if (z < 0) z += 256;
+          imgData.data[y * scol * 4 + x * 4 + t] = z * AA_inv % 256;
+        }
+      }
+    }
+    for (var i = 3; i < imgData.data.length; i += 4)
+      imgData.data[i] = 255;
+    ctx.putImageData(imgData, 0, 0);
+    document.getElementById("err").innerHTML = ('圖' + a + " XOR 圖" + b);
+    //downloadCanvas(a,b);
+  } else {
+    window.alert('請選擇兩張圖片');
+    for (var i = 0; i < imgData.data.length; i++)
+      imgData.data[i] = 0;
+    ctx.putImageData(imgData, 0, 0);
+  }
+}
+
+function showphoto34() {
   if (c3 != null && c4 != null) {
     var AA = c3[0][0].s,
       BB = c3[0][1].s;
     var AA_inv = getA_inv(AA);
-    var c = document.getElementById('canvas'),
+    var c = document.getElementById('canvas34'),
       ctx = c.getContext('2d'),
       imgData = ctx.createImageData(c34row / 2, c34col / 2),
       tmpc = [];
@@ -246,57 +300,7 @@ function showphoto() {
       imgData.data[i] = 255;
     ctx.putImageData(imgData, 0, 0);
   } else {
-    var a = -1,
-      b = -1;
-    var markedCheckbox = document.querySelectorAll('input[type="checkbox"]:checked');
-    for (var checkbox of markedCheckbox) {
-      if (a == -1) a = checkbox.value;
-      else b = checkbox.value;
-    }
-    var c = document.getElementById('canvas'),
-      ctx = c.getContext('2d'),
-      imgData = ctx.createImageData(srow, scol);
-    if (a != -1 && b != -1) {
-      document.getElementById("err").innerHTML = ('');
-      var c_a = document.getElementById('canvas' + a),
-        ctx_a = c_a.getContext('2d'),
-        imgData_a = ctx_a.getImageData(0, 0, ccol, crow),
-        c_b = document.getElementById('canvas' + b),
-        ctx_b = c_b.getContext('2d'),
-        imgData_b = ctx_b.getImageData(0, 0, ccol, crow),
-        tmp = [];
-      c.width = scol;
-      c.height = srow;
-      for (var i = 0; i < imgData_a.data.length; i++) {
-        if (i % 4 == 3) {
-          tmp[i] = 255;
-          continue;
-        }
-        tmp[i] = imgData_a.data[i] ^ imgData_b.data[i];
-      }
-      var AA = imgData_a.data[3],
-        BB = imgData_a.data[7];
-      var AA_inv = getA_inv(AA);
-      //console.log(A, B, AA, BB, AA_inv);
-      for (var y = 0; y < srow; y++) {
-        for (var x = 0; x < scol; x++) {
-          for (var t = 0; t < 4; t++) {
-            var z = Math.max(tmp[2 * y * ccol * 4 + 2 * x * 4 + t], tmp[2 * y * ccol * 4 + (2 * x + 1) * 4 + t], tmp[(2 * y + 1) * ccol * 4 + 2 * x * 4 + t], tmp[(2 * y + 1) * ccol * 4 + (2 * x + 1) * 4 + t]) - BB;
-            if (z < 0) z += 256;
-            imgData.data[y * scol * 4 + x * 4 + t] = z * AA_inv % 256;
-          }
-        }
-      }
-      for (var i = 3; i < imgData.data.length; i += 4)
-        imgData.data[i] = 255;
-      ctx.putImageData(imgData, 0, 0);
-      document.getElementById("err").innerHTML = ('圖' + a + " XOR 圖" + b);
-    } else {
-      window.alert('請選擇兩張圖片');
-      for (var i = 0; i < imgData.data.length; i++)
-        imgData.data[i] = 0;
-      ctx.putImageData(imgData, 0, 0);
-    }
+    window.alert("錯誤:圖片缺失");
   }
 }
 
@@ -324,11 +328,51 @@ function check() {
         n += 4;
     }
   }
-  console.log(s1[0][0].r,s1[0][0].g,s1[0][0].b,s1[0][0].s);
-  console.log(imgData.data[0],imgData.data[1],imgData.data[2],imgData.data[3]);
-  console.log(s1[0][1].r,s1[0][1].g,s1[0][1].b,s1[0][1].s);
-  console.log(imgData.data[4],imgData.data[5],imgData.data[6],imgData.data[7]);
+  console.log(s1[0][0].r, s1[0][0].g, s1[0][0].b, s1[0][0].s);
+  console.log(imgData.data[0], imgData.data[1], imgData.data[2], imgData.data[3]);
+  console.log(s1[0][1].r, s1[0][1].g, s1[0][1].b, s1[0][1].s);
+  console.log(imgData.data[4], imgData.data[5], imgData.data[6], imgData.data[7]);
   document.getElementById("check").innerHTML = ('與原圖' + n + '處相同,' + n / imgData.data.length * 100 + '%相符');
+}
+
+function check34() {
+  var c = document.getElementById('canvas34'),
+    ctx = c.getContext('2d'),
+    imgData = ctx.getImageData(0, 0, scol, srow),
+    n = 0;
+  for (var y = 0; y < srow; y++) {
+    for (var x = 0; x < scol; x++) {
+      if (imgData.data[y * scol * 4 + x * 4] == s1[y][x].r && imgData.data[y * scol * 4 + x * 4 + 1] == s1[y][x].g && imgData.data[y * scol * 4 + x * 4 + 2] == s1[y][x].b)
+        n += 4;
+    }
+  }
+  document.getElementById("check2").innerHTML = ('與原圖' + n + '處相同,' + n / imgData.data.length * 100 + '%相符');
+}
+
+function downloadCanvas() {
+  var a = -1,
+    b = -1;
+  var markedCheckbox = document.querySelectorAll('input[type="checkbox"]:checked');
+  for (var checkbox of markedCheckbox) {
+    if (a == -1) a = checkbox.value;
+    else b = checkbox.value;
+  }
+  var canvas = document.getElementById('canvas' + a);
+  var canvas1 = document.getElementById('canvas' + b);
+  var image = canvas.toDataURL();
+  var image1 = canvas1.toDataURL();
+  var url = [image, image1];
+  var tmpLink = document.createElement('a');
+  tmpLink.download = '分享份1.png';
+  tmpLink.href = image;
+  document.body.appendChild(tmpLink);
+  tmpLink.click();
+  document.body.removeChild(tmpLink);
+  tmpLink.download = '分享份2.png';
+  tmpLink.href = image1;
+  document.body.appendChild(tmpLink);
+  tmpLink.click();
+  document.body.removeChild(tmpLink);
 }
 
 function reset() {
