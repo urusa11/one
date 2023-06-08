@@ -33,7 +33,7 @@ var s1, s1a, s2, c1, c2, c3, c4, srow = 0,
   ccol = 0,
   c34row = 0,
   c34col = 0,
-  A, B, A_inv;
+  AC;
 
 srcImgEl.onload = function() {
   var src = cv.imread(srcImgEl);
@@ -65,6 +65,18 @@ function srgb(r, g, b, s) {
   this.s = s;
 }
 
+function ab() {
+  this.a = Math.floor(Math.random() * 256);
+  while (this.a % 2 == 0 || this.a == 1 || 256 % this.a == 0)
+    this.a = Math.floor(Math.random() * 256);
+  this.b = Math.floor(1 + Math.random() * 255);
+  for (var i = 0; i < 256; i++) {
+    var flag = (this.a * i) % 256;
+    if (flag == 1)
+      this.a_inv = i;
+  }
+}
+
 function getpixels(src) {
   var p = new getarr(src.rows);
   for (var y = 0; y < src.rows; y++) {
@@ -74,15 +86,6 @@ function getpixels(src) {
     }
   }
   return p;
-}
-
-function getAB() {
-  A = document.getElementById('AA').value * 1;
-  B = document.getElementById('AB').value * 1;
-  if (A % 2 == 0 || 256 % A == 0 || A < 0||A==null||A==1)
-    window.alert("錯誤:隨機數A錯誤");
-  if (B < 1 || B > 255||B==null)
-    window.alert("錯誤:隨機數B錯誤");
 }
 
 function getA_inv(n) {
@@ -96,12 +99,13 @@ function getA_inv(n) {
 }
 
 function affine() {
-  getAB();
-  AC = new getarr(srow);
+  AC = new getarr(3);
+  for (var i = 0; i < 3; i++)
+    AC[i] = new ab();
   s1a = new getarr(srow);
   for (var y = 0; y < srow; y++) {
     for (var x = 0; x < scol; x++) {
-      s1a[y][x] = new srgb((s1[y][x].r * A + B) % 256, (s1[y][x].g * A + B) % 256, (s1[y][x].b * A + B) % 256, 255);
+      s1a[y][x] = new srgb((s1[y][x].r * AC[0].a + AC[0].b) % 256, (s1[y][x].g * AC[1].a + AC[1].b) % 256, (s1[y][x].b * AC[2].a + AC[2].b) % 256, 255);
     }
   }
 }
@@ -160,9 +164,19 @@ function showphotos() {
     window.alert("錯誤:沒有圖片或圖片大小錯誤");
   else {
     var num = document.getElementById('quantity');
-    if (num.value == 0)
+    if (num.value == 0 || num.value == 1)
       window.alert("請輸入生成張數");
     else {
+      for (var p = 1; p <= 16; p++) {
+        var c = document.getElementById('canvas' + p),
+          ctx = c.getContext('2d'),
+          imgData = ctx.createImageData(crow, ccol);
+        c.width = ccol;
+        c.height = crow;
+        for (var i = 0; i < imgData.data.length; i++)
+          imgData.data[i] = 0;
+        ctx.putImageData(imgData, 0, 0);
+      }
       var tmp = getphotos();
       for (var p = 1; p <= num.value; p++) {
         var c = document.getElementById('canvas' + p),
@@ -176,9 +190,17 @@ function showphotos() {
             imgData.data[y * ccol * 4 + x * 4 + 1] = tmp[p - 1][y][x].g;
             imgData.data[y * ccol * 4 + x * 4 + 2] = tmp[p - 1][y][x].b;
             if (y == 0 && x == 0)
-              imgData.data[y * ccol * 4 + x * 4 + 3] = A;
+              imgData.data[y * ccol * 4 + x * 4 + 3] = AC[0].a;
             else if (y == 0 && x == 1)
-              imgData.data[y * ccol * 4 + x * 4 + 3] = B;
+              imgData.data[y * ccol * 4 + x * 4 + 3] = AC[0].b;
+            else if (y == 0 && x == 2)
+              imgData.data[y * ccol * 4 + x * 4 + 3] = AC[1].a;
+            else if (y == 0 && x == 3)
+              imgData.data[y * ccol * 4 + x * 4 + 3] = AC[1].b;
+            else if (y == 0 && x == 4)
+              imgData.data[y * ccol * 4 + x * 4 + 3] = AC[2].a;
+            else if (y == 0 && x == 5)
+              imgData.data[y * ccol * 4 + x * 4 + 3] = AC[2].b;
             else
               imgData.data[y * ccol * 4 + x * 4 + 3] = tmp[p - 1][y][x].s;
           }
@@ -242,16 +264,35 @@ function showphoto() {
       }
       tmp[i] = imgData_a.data[i] ^ imgData_b.data[i];
     }
-    var AA = imgData_a.data[3],
-      BB = imgData_a.data[7];
-    var AA_inv = getA_inv(AA);
-    //console.log(A, B, AA, BB, AA_inv);
+    var AA = new getarr(3);
+    for (var i = 0; i < 3; i++)
+      AA[i] = new ab();
+    AA[0].a = imgData_a.data[3];
+    AA[0].b = imgData_a.data[7];
+    AA[1].a = imgData_a.data[11];
+    AA[1].b = imgData_a.data[15];
+    AA[2].a = imgData_a.data[19];
+    AA[2].b = imgData_a.data[23];
+    for (var i = 0; i < 3; i++)
+      AA[i].a_inv = getA_inv(AA[i].a)
     for (var y = 0; y < srow; y++) {
       for (var x = 0; x < scol; x++) {
         for (var t = 0; t < 4; t++) {
-          var z = Math.max(tmp[2 * y * ccol * 4 + 2 * x * 4 + t], tmp[2 * y * ccol * 4 + (2 * x + 1) * 4 + t], tmp[(2 * y + 1) * ccol * 4 + 2 * x * 4 + t], tmp[(2 * y + 1) * ccol * 4 + (2 * x + 1) * 4 + t]) - BB;
-          if (z < 0) z += 256;
-          imgData.data[y * scol * 4 + x * 4 + t] = z * AA_inv % 256;
+          if (t == 0) {
+            var z = Math.max(tmp[2 * y * ccol * 4 + 2 * x * 4 + t], tmp[2 * y * ccol * 4 + (2 * x + 1) * 4 + t], tmp[(2 * y + 1) * ccol * 4 + 2 * x * 4 + t], tmp[(2 * y + 1) * ccol * 4 + (2 * x + 1) * 4 + t]) - AA[0].b;
+            if (z < 0) z += 256;
+            imgData.data[y * scol * 4 + x * 4 + t] = z * AA[0].a_inv % 256;
+          } else if (t == 1) {
+            var z = Math.max(tmp[2 * y * ccol * 4 + 2 * x * 4 + t], tmp[2 * y * ccol * 4 + (2 * x + 1) * 4 + t], tmp[(2 * y + 1) * ccol * 4 + 2 * x * 4 + t], tmp[(2 * y + 1) * ccol * 4 + (2 * x + 1) * 4 + t]) - AA[1].b;
+            if (z < 0) z += 256;
+            imgData.data[y * scol * 4 + x * 4 + t] = z * AA[1].a_inv % 256;
+          } else if (t == 2) {
+            var z = Math.max(tmp[2 * y * ccol * 4 + 2 * x * 4 + t], tmp[2 * y * ccol * 4 + (2 * x + 1) * 4 + t], tmp[(2 * y + 1) * ccol * 4 + 2 * x * 4 + t], tmp[(2 * y + 1) * ccol * 4 + (2 * x + 1) * 4 + t]) - AA[2].b;
+            if (z < 0) z += 256;
+            imgData.data[y * scol * 4 + x * 4 + t] = z * AA[2].a_inv % 256;
+          } else {
+            imgData.data[y * scol * 4 + x * 4 + t] = 255;
+          }
         }
       }
     }
@@ -259,7 +300,6 @@ function showphoto() {
       imgData.data[i] = 255;
     ctx.putImageData(imgData, 0, 0);
     document.getElementById("err").innerHTML = ('圖' + a + " XOR 圖" + b);
-    //downloadCanvas(a,b);
   } else {
     window.alert('請選擇兩張圖片');
     for (var i = 0; i < imgData.data.length; i++)
@@ -270,9 +310,17 @@ function showphoto() {
 
 function showphoto34() {
   if (c3 != null && c4 != null) {
-    var AA = c3[0][0].s,
-      BB = c3[0][1].s;
-    var AA_inv = getA_inv(AA);
+    var AA = new getarr(3);
+    for (var i = 0; i < 3; i++)
+      AA[i] = new ab();
+    AA[0].a = c3[0][0].s;
+    AA[0].b = c3[0][1].s;
+    AA[1].a = c3[0][2].s;
+    AA[1].b = c3[0][3].s;
+    AA[2].a = c3[0][4].s;
+    AA[2].b = c3[0][5].s;
+    for (var i = 0; i < 3; i++)
+      AA[i].a_inv = getA_inv(AA[i].a)
     var c = document.getElementById('canvas34'),
       ctx = c.getContext('2d'),
       imgData = ctx.createImageData(c34row / 2, c34col / 2),
@@ -290,9 +338,21 @@ function showphoto34() {
     for (var y = 0; y < c34row / 2; y++) {
       for (var x = 0; x < c34col / 2; x++) {
         for (var t = 0; t < 4; t++) {
-          var z = Math.max(tmpc[2 * y * c34col * 4 + 2 * x * 4 + t], tmpc[2 * y * c34col * 4 + (2 * x + 1) * 4 + t], tmpc[(2 * y + 1) * c34col * 4 + 2 * x * 4 + t], tmpc[(2 * y + 1) * c34col * 4 + (2 * x + 1) * 4 + t]) - BB;
-          if (z < 0) z += 256;
-          imgData.data[y * c34col / 2 * 4 + x * 4 + t] = z * AA_inv % 256;
+          if (t == 0) {
+            var z = Math.max(tmpc[2 * y * c34col * 4 + 2 * x * 4 + t], tmpc[2 * y * c34col * 4 + (2 * x + 1) * 4 + t], tmpc[(2 * y + 1) * c34col * 4 + 2 * x * 4 + t], tmpc[(2 * y + 1) * c34col * 4 + (2 * x + 1) * 4 + t]) - AA[0].b;
+            if (z < 0) z += 256;
+            imgData.data[y * c34col / 2 * 4 + x * 4 + t] = z * AA[0].a_inv % 256;
+          } else if (t == 1) {
+            var z = Math.max(tmpc[2 * y * c34col * 4 + 2 * x * 4 + t], tmpc[2 * y * c34col * 4 + (2 * x + 1) * 4 + t], tmpc[(2 * y + 1) * c34col * 4 + 2 * x * 4 + t], tmpc[(2 * y + 1) * c34col * 4 + (2 * x + 1) * 4 + t]) - AA[1].b;
+            if (z < 0) z += 256;
+            imgData.data[y * c34col / 2 * 4 + x * 4 + t] = z * AA[1].a_inv % 256;
+          } else if (t == 2) {
+            var z = Math.max(tmpc[2 * y * c34col * 4 + 2 * x * 4 + t], tmpc[2 * y * c34col * 4 + (2 * x + 1) * 4 + t], tmpc[(2 * y + 1) * c34col * 4 + 2 * x * 4 + t], tmpc[(2 * y + 1) * c34col * 4 + (2 * x + 1) * 4 + t]) - AA[2].b;
+            if (z < 0) z += 256;
+            imgData.data[y * c34col / 2 * 4 + x * 4 + t] = z * AA[2].a_inv % 256;
+          } else {
+            imgData.data[y * scol * 4 + x * 4 + t] = 255;
+          }
         }
       }
     }
@@ -328,22 +388,9 @@ function check() {
         n += 4;
     }
   }
-if(n / imgData.data.length * 100>99)
-  document.getElementById("check").innerHTML = ('與原圖' +100 + '%相符');
-}
-
-function check34() {
-  var c = document.getElementById('canvas34'),
-    ctx = c.getContext('2d'),
-    imgData = ctx.getImageData(0, 0, scol, srow),
-    n = 0;
-  for (var y = 0; y < srow; y++) {
-    for (var x = 0; x < scol; x++) {
-      if (imgData.data[y * scol * 4 + x * 4] == s1[y][x].r && imgData.data[y * scol * 4 + x * 4 + 1] == s1[y][x].g && imgData.data[y * scol * 4 + x * 4 + 2] == s1[y][x].b)
-        n += 4;
-    }
-  }
-  document.getElementById("check2").innerHTML = ('與原圖' + n + '處相同,' + n / imgData.data.length * 100 + '%相符');
+  //document.getElementById("check").innerHTML = ('與原圖' + n + '處相同,' + n / imgData.data.length * 100 + '%相符');
+   if (n / imgData.data.length * 100 > 99)
+    document.getElementById("check").innerHTML = ('與原圖' + 100 + '%相符'); 
 }
 
 function downloadCanvas() {
